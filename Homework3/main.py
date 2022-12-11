@@ -16,7 +16,6 @@
 
 from tkinter import *
 from chessBoard import ChessBoard
-from utils import Icon
 from math import floor
 
 

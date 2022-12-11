@@ -4,7 +4,6 @@ from utils import Color, Title
 
 class ChessBoard:
     def __init__(self):
-        # self.board = [[0] * 8] * 8
         self.board = [
             [
                 Figure(Color.BLACK, Title.ROOK),

@@ -1,4 +1,4 @@
-from utils import Color, Title, Icon
+from utils import Title, Icon
 
 
 class Figure:
@@ -6,18 +6,6 @@ class Figure:
         self.color = color
         self.title = title
         self.ref = None
-
-    # def set_ref(self, ref):
-    #     self.ref = ref
-    #
-    # def get_ref(self):
-    #     return self.ref
-
-    # def move(self):
-    #     pass
-    #
-    # def beat(self):
-    #     pass
 
     def __repr__(self):
         title = Title(self.title).name
