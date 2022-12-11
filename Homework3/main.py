@@ -12,17 +12,19 @@
 
 # https://en.wikipedia.org/wiki/Chess_symbols_in_Unicode
 # https://chessdelights.com/wp-content/uploads/2019/09/chesspositions2.png
+# https://stackoverflow.com/questions/42175815/python-tkinter-canvas-when-rectangle-clicked
 
 from tkinter import *
-from pprint import pprint
-from figure import Figure
-from utils import Color, Title, Icon
 from chessBoard import ChessBoard
+from utils import Icon
+from math import floor
 
 
 WIDTH = 600
 HEIGHT = 600
-CELL = 60  # width/height in px
+CELL_SIZE = 60
+OFFSET_X = 30
+OFFSET_Y = 32
 LIGHT_TILE = "#B1E4B8"
 DARK_TILE = "#70A2A3"
 TITLE = "ChessBoard"
@@ -37,16 +39,36 @@ canvas = Canvas(win, width=WIDTH, height=HEIGHT)
 # draw board
 for xIndex in range(8):
     for yIndex in range(8):
-        x = (xIndex + 1) * CELL
-        y = (yIndex + 1) * CELL
+        x = (xIndex + 1) * CELL_SIZE
+        y = (yIndex + 1) * CELL_SIZE
         color = LIGHT_TILE if (xIndex + yIndex) % 2 == 0 else DARK_TILE
-        canvas.create_rectangle(x, y, x + CELL, y + CELL, fill=color, width=0)
+        canvas.create_rectangle(x, y, x + CELL_SIZE, y + CELL_SIZE, fill=color, width=0, tags="handleClick")
+        # draw pieces
         piece = chessBoard.get(xIndex, yIndex)
         if piece:
             pieceColor = "white" if piece.color else "black"
-            canvas.create_text(x + 30, y + 32, text=piece, fill=pieceColor, font="Helvetica 48")
+            piece.ref = canvas.create_text(x + OFFSET_X, y + OFFSET_Y, text=piece, fill=pieceColor, font="Helvetica 48", tags=("handleClick", "pieces"))
 
-# canvas.create_text(448, 512, text=Icon.KNIGHT.value, fill="black", font='Helvetica 48')
-# canvas.tag_bind("playbutton", "<Button-1>", p)
 canvas.pack()
+
+
+def get_click_cell(i):
+    cell = floor(i / CELL_SIZE)
+    if cell < 1:
+        cell = 1
+    if cell > 8:
+        cell = 8
+    return cell
+
+
+def click_handler(*args):
+    cell_x = get_click_cell(args[0].x) - 1
+    cell_y = get_click_cell(args[0].y) - 1
+
+    canvas.move(chessBoard.get(cell_x, cell_y).ref, 0, CELL_SIZE)
+    canvas.tag_raise("pieces")  # pieces need to have a higher z-index than the board
+
+
+canvas.tag_bind("handleClick", "<Button-1>", click_handler)
+
 win.mainloop()

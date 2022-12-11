@@ -5,6 +5,13 @@ class Figure:
     def __init__(self, color, title):
         self.color = color
         self.title = title
+        self.ref = None
+
+    # def set_ref(self, ref):
+    #     self.ref = ref
+    #
+    # def get_ref(self):
+    #     return self.ref
 
     # def move(self):
     #     pass
