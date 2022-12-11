@@ -1,4 +1,4 @@
-from utils import Color, Title, BlackIcon, WhiteIcon
+from utils import Color, Title, Icon
 
 
 class Figure:
@@ -6,15 +6,12 @@ class Figure:
         self.color = color
         self.title = title
 
-    def move(self):
-        pass
-
-    def beat(self):
-        pass
+    # def move(self):
+    #     pass
+    #
+    # def beat(self):
+    #     pass
 
     def __repr__(self):
         title = Title(self.title).name
-        if self.color == Color.WHITE:
-            return WhiteIcon[title].value
-        else:
-            return BlackIcon[title].value
+        return Icon[title].value

@@ -1,12 +1,12 @@
-from enum import Enum
+from enum import IntEnum, StrEnum
 
 
-class Color(Enum):
+class Color(IntEnum):
     BLACK = 0
     WHITE = 1
 
 
-class Title(Enum):
+class Title(IntEnum):
     ROOK = 1
     KNIGHT = 2
     BISHOP = 3
@@ -15,22 +15,43 @@ class Title(Enum):
     PAWN = 6
 
 
-class WhiteIcon(Enum):
-    ROOK = "\u2656"
-    KNIGHT = "\u2658"
-    BISHOP = "\u2657"
-    KING = "\u2654"
-    QUEEN = "\u2655"
-    PAWN = "\u2659"
-
-
-class BlackIcon(Enum):
+class Icon(StrEnum):
     ROOK = "\u265C"
     KNIGHT = "\u265E"
     BISHOP = "\u265D"
     KING = "\u265B"
     QUEEN = "\u265A"
     PAWN = "\u265F"
+
+
+# defaultBoard = [
+#         [
+#             Figure(Color.BLACK, Title.ROOK),
+#             Figure(Color.BLACK, Title.KNIGHT),
+#             Figure(Color.BLACK, Title.BISHOP),
+#             Figure(Color.BLACK, Title.KING),
+#             Figure(Color.BLACK, Title.QUEEN),
+#             Figure(Color.BLACK, Title.BISHOP),
+#             Figure(Color.BLACK, Title.KNIGHT),
+#             Figure(Color.BLACK, Title.ROOK),
+#         ],
+#         [Figure(Color.BLACK, Title.PAWN)] * 8,
+#         [0] * 8,
+#         [0] * 8,
+#         [0] * 8,
+#         [0] * 8,
+#         [Figure(Color.WHITE, Title.PAWN)] * 8,
+#         [
+#             Figure(Color.WHITE, Title.ROOK),
+#             Figure(Color.WHITE, Title.KNIGHT),
+#             Figure(Color.WHITE, Title.BISHOP),
+#             Figure(Color.WHITE, Title.KING),
+#             Figure(Color.WHITE, Title.QUEEN),
+#             Figure(Color.WHITE, Title.BISHOP),
+#             Figure(Color.WHITE, Title.KNIGHT),
+#             Figure(Color.WHITE, Title.ROOK),
+#         ],
+#     ]
 
 
 # class DefaultRow(Enum):
