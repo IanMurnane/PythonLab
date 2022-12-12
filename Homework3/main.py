@@ -73,20 +73,18 @@ def click_handler(*args):
             return
         first_click = (cell_x, cell_y)
     else:
-        # currently cant move to an occupied square
-        if chessBoard.get(cell_x, cell_y):
-            first_click = None
-            return
         from_x = first_click[0]
         from_y = first_click[1]
         to_x = cell_x
         to_y = cell_y
         move_x = (to_x - from_x) * CELL_SIZE
         move_y = (to_y - from_y) * CELL_SIZE
+        first_click = None
+        if not chessBoard.is_valid(from_x, from_y, to_x, to_y):
+            return
         canvas.move(chessBoard.get(from_x, from_y).ref, move_x, move_y)
         chessBoard.move(from_x, from_y, to_x, to_y)
         canvas.tag_raise("pieces")  # pieces need to have a higher z-index than the board
-        first_click = None
 
 
 canvas.tag_bind("handleClick", "<Button-1>", click_handler)
