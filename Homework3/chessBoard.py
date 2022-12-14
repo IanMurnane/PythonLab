@@ -64,10 +64,14 @@ class ChessBoard:
     def is_valid(self, from_x, from_y, to_x, to_y):
         movement = Movement()
         piece = self.board[from_y][from_x]
+        to_piece = self.board[to_y][to_x]
         title = piece.get_title()
         color = piece.get_color()
         x = to_x - from_x
         y = to_y - from_y
+        # can't land on the same color piece
+        if to_piece and piece.color == to_piece.color:
+            return False
         # pawn rules are color specific
         if title == "PAWN":
             title += "_" + color
