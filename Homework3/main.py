@@ -80,8 +80,13 @@ def click_handler(*args):
         move_x = (to_x - from_x) * CELL_SIZE
         move_y = (to_y - from_y) * CELL_SIZE
         first_click = None
+        # check valid move
         if not chessBoard.is_valid(from_x, from_y, to_x, to_y):
             return
+        # "beat" any existing piece
+        if chessBoard.get(to_x, to_y):
+            canvas.delete(chessBoard.get(to_x, to_y).ref)
+        # move piece
         canvas.move(chessBoard.get(from_x, from_y).ref, move_x, move_y)
         chessBoard.move(from_x, from_y, to_x, to_y)
         canvas.tag_raise("pieces")  # pieces need to have a higher z-index than the board
