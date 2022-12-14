@@ -1,5 +1,5 @@
 from figure import Figure
-from utils import Color, Title, Movement
+from config import Color, Title, Movement
 
 
 class ChessBoard:

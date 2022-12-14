@@ -1,4 +1,4 @@
-from utils import Title, Icon
+from config import Title, Icon
 
 
 class Figure:
