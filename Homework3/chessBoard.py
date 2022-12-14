@@ -59,19 +59,28 @@ class ChessBoard:
         self.board[to_y][to_x] = figure
         self.board[from_y][from_x] = None
 
+    # check if a move is valid
+    # - note: the piece is saved to the chessboard grid using from_x and from_y
     def is_valid(self, from_x, from_y, to_x, to_y):
         movement = Movement()
-        title = Title(self.board[from_y][from_x].title).name
+        piece = self.board[from_y][from_x]
+        title = piece.get_title()
+        color = piece.get_color()
         x = to_x - from_x
         y = to_y - from_y
         # pawn rules are color specific
         if title == "PAWN":
-            title += "_" + Color(self.board[from_y][from_x].color).name
+            title += "_" + color
         # is the new position valid according to the movement rules for this piece
         for direction in movement.directions(title):
             test_x = direction[0]
             test_y = direction[1]
             iterations = direction[2] or 7
+            # PAWNS first move can be 2 spaces
+            if piece.title == Title.PAWN\
+                    and ((piece.color == Color.WHITE and from_y == 6)
+                         or (piece.color == Color.BLACK and from_y == 1)):
+                iterations = 2
             if x == test_x and y == test_y:
                 return True
             for i in range(iterations - 1):  # e.g. (0, -1, 2)

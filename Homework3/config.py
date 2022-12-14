@@ -73,11 +73,11 @@ class Movement:
             ],
         }
         self.PAWN_WHITE = {
-            "directions": [(0, -1, 2)],  # up
+            "directions": [(0, -1, 1)],  # up
             "attack": [(-1, -1), (1, -1)],  # up-left up-right
         }
         self.PAWN_BLACK = {
-            "directions": [(0, 1, 2)],  # down
+            "directions": [(0, 1, 1)],  # down
             "attack": [(-1, 1), (1, 1)],  # down-left down-right
         }
 

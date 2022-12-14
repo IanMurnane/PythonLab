@@ -1,4 +1,4 @@
-from config import Title, Icon
+from config import Color, Icon, Title
 
 
 class Figure:
@@ -8,5 +8,10 @@ class Figure:
         self.ref = None
 
     def __repr__(self):
-        title = Title(self.title).name
-        return Icon[title].value
+        return Icon[self.get_title()].value
+
+    def get_color(self):
+        return Color(self.color).name
+
+    def get_title(self):
+        return Title(self.title).name
