@@ -16,6 +16,7 @@ TITLE = "ChessBoard"
 
 chessBoard = ChessBoard()
 first_click = None
+last_color = None
 
 # init canvas
 win = Tk()
@@ -48,7 +49,7 @@ def get_click_cell(i):
 
 
 def click_handler(*args):
-    global first_click
+    global first_click, last_color
 
     cell_x = get_click_cell(args[0].x) - 1
     cell_y = get_click_cell(args[0].y) - 1
@@ -68,6 +69,9 @@ def click_handler(*args):
         first_click = None
         from_piece = chessBoard.get(from_x, from_y)
         to_piece = chessBoard.get(to_x, to_y)
+        # ensure users take 1 turn each
+        if last_color and last_color == from_piece.get_color():
+            return
         # check valid move
         if not chessBoard.is_move_valid(from_x, from_y, to_x, to_y):
             return
@@ -92,6 +96,7 @@ def click_handler(*args):
             canvas.move(from_piece.ref, move_x, move_y)
             chessBoard.move(from_x, from_y, to_x, to_y)
         canvas.tag_raise("pieces")  # pieces need to have a higher z-index than the board
+        last_color = chessBoard.get(to_x, to_y).get_color()
 
 
 canvas.tag_bind("handleClick", "<Button-1>", click_handler)

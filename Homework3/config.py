@@ -26,7 +26,7 @@ class Icon(StrEnum):
 
 # rules for movement
 # directions - (x, y, distance)
-# attack - (x, y)
+# attack - (x, y, 1)
 class Movement:
     def __init__(self):
         self.ROOK = {
