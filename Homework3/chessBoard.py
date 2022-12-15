@@ -59,37 +59,80 @@ class ChessBoard:
         self.board[to_y][to_x] = figure
         self.board[from_y][from_x] = None
 
-    # check if a move is valid
-    # - note: the piece is saved to the chessboard grid using from_x and from_y
-    def is_valid(self, from_x, from_y, to_x, to_y):
+    def is_move_valid(self, from_x, from_y, to_x, to_y):
         movement = Movement()
-        piece = self.board[from_y][from_x]
+        from_piece = self.board[from_y][from_x]
         to_piece = self.board[to_y][to_x]
-        title = piece.get_title()
-        color = piece.get_color()
-        x = to_x - from_x
-        y = to_y - from_y
+        title = from_piece.get_title()
+        color = from_piece.get_color()
+        x_distance = to_x - from_x
+        y_distance = to_y - from_y
+        distance_override = 0
+        can_attack = True
+        can_jump = False
+
         # can't land on the same color piece
-        if to_piece and piece.color == to_piece.color:
+        if to_piece and from_piece.color == to_piece.color:
             return False
-        # pawn rules are color specific
+
+        # special rules for pawns
         if title == "PAWN":
-            title += "_" + color
-        # is the new position valid according to the movement rules for this piece
+            can_attack = False  # can't attack directly
+            title += "_" + color  # movement rules are color specific
+            if (from_piece.color == Color.WHITE and from_y == 6) or (from_piece.color == Color.BLACK and from_y == 1):
+                distance_override = 2  # allowed 2 moves from start position
+
+        if title == "KNIGHT":
+            can_jump = True
+
+        # check movement request is valid according to piece rules in config
         for direction in movement.directions(title):
-            test_x = direction[0]
-            test_y = direction[1]
-            iterations = direction[2] or 7
-            # PAWNS first move can be 2 spaces
-            if piece.title == Title.PAWN\
-                    and ((piece.color == Color.WHITE and from_y == 6)
-                         or (piece.color == Color.BLACK and from_y == 1)):
-                iterations = 2
-            if x == test_x and y == test_y:
+            if self._check_direction(from_x, from_y, direction, x_distance, y_distance, distance_override, can_attack, False, can_jump):
                 return True
-            for i in range(iterations - 1):  # e.g. (0, -1, 2)
-                test_x += direction[0]
-                test_y += direction[1]
-                if x == test_x and y == test_y:
+
+        if movement.attack(title):
+            for direction in movement.attack(title):
+                if self._check_direction(from_x, from_y, direction, x_distance, y_distance, distance_override, True, True, can_jump):
                     return True
+
+        return False
+
+    # check if move is valid according to config rules
+    def _check_direction(self, x, y, direction, x_distance, y_distance, distance_override, can_attack, must_attack, can_jump):
+        test_x_distance = 0
+        test_y_distance = 0
+        blocking_piece = False  # found a piece along the way to a valid location
+        distance = distance_override or direction[2]  # max travel distance
+
+        for i in range(distance):
+            test_x_distance += direction[0]
+            test_y_distance += direction[1]
+            test_x = x + test_x_distance
+            test_y = y + test_y_distance
+
+            # skip tests off the board
+            if test_x < 0 or test_y < 0 or test_x > 7 or test_y > 7:
+                break
+
+            # the click area is in a valid position
+            if test_x_distance == x_distance and test_y_distance == y_distance:
+                # check if there was a blocking piece (and can't jump)
+                if blocking_piece and not can_jump:
+                    print("blocking piece")
+                    return False
+                # check if attacking (and is allowed to attack)
+                if self.board[y + test_y_distance][x + test_x_distance] and not can_attack:
+                    print("cant attack")
+                    return False
+                # check if attacking with nothing to attack
+                if not self.board[y + test_y_distance][x + test_x_distance] and must_attack:
+                    print("nothing to attack")
+                    return False
+
+                return True
+
+            # check for blocking piece after testing for valid position, as a piece in the final position is not a block
+            if self.board[y + test_y_distance][x + test_x_distance]:
+                blocking_piece = True
+
         return False

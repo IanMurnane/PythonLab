@@ -81,7 +81,7 @@ def click_handler(*args):
         move_y = (to_y - from_y) * CELL_SIZE
         first_click = None
         # check valid move
-        if not chessBoard.is_valid(from_x, from_y, to_x, to_y):
+        if not chessBoard.is_move_valid(from_x, from_y, to_x, to_y):
             return
         # "beat" any existing piece
         if chessBoard.get(to_x, to_y):

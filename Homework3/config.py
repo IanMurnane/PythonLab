@@ -25,12 +25,12 @@ class Icon(StrEnum):
 
 
 # rules for movement
-# directions - (x, y, iterations)
+# directions - (x, y, distance)
 # attack - (x, y)
 class Movement:
     def __init__(self):
         self.ROOK = {
-            "directions": [(0, -1, 0), (1, 0, 0), (0, 1, 0), (-1, 0, 0)],  # up right down left
+            "directions": [(0, -1, 7), (1, 0, 7), (0, 1, 7), (-1, 0, 7)],  # up right down left
         }
         self.KNIGHT = {
             "directions": [
@@ -42,10 +42,10 @@ class Movement:
         }
         self.BISHOP = {
             "directions": [
-                (1, -1, 0),  # up-right
-                (1, 1, 0),  # right-down
-                (-1, 1, 0),  # down-left
-                (-1, -1, 0),  # up-left
+                (1, -1, 7),  # up-right
+                (1, 1, 7),  # right-down
+                (-1, 1, 7),  # down-left
+                (-1, -1, 7),  # up-left
             ],
         }
         self.KING = {
@@ -62,23 +62,23 @@ class Movement:
         }
         self.QUEEN = {
             "directions": [
-                (0, -1, 0),  # up
-                (1, -1, 0),  # up-right
-                (1, 0, 0),  # right
-                (1, 1, 0),  # right-down
-                (0, 1, 0),  # down
-                (-1, 1, 0),  # down-left
-                (-1, 0, 0),  # left
-                (-1, -1, 0),  # up-left
+                (0, -1, 7),  # up
+                (1, -1, 7),  # up-right
+                (1, 0, 7),  # right
+                (1, 1, 7),  # right-down
+                (0, 1, 7),  # down
+                (-1, 1, 7),  # down-left
+                (-1, 0, 7),  # left
+                (-1, -1, 7),  # up-left
             ],
         }
         self.PAWN_WHITE = {
             "directions": [(0, -1, 1)],  # up
-            "attack": [(-1, -1), (1, -1)],  # up-left up-right
+            "attack": [(-1, -1, 1), (1, -1, 1)],  # up-left up-right
         }
         self.PAWN_BLACK = {
             "directions": [(0, 1, 1)],  # down
-            "attack": [(-1, 1), (1, 1)],  # down-left down-right
+            "attack": [(-1, 1, 1), (1, 1, 1)],  # down-left down-right
         }
 
     def directions(self, title):
