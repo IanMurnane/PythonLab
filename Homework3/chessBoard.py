@@ -54,6 +54,12 @@ class ChessBoard:
     def get(self, x, y):
         return self.board[y][x]
 
+    def set(self, x, y, color, title):
+        self.board[y][x] = Figure(color, title)
+
+    def set_ref(self, x, y, ref):
+        self.board[y][x].ref = ref
+
     def move(self, from_x, from_y, to_x, to_y):
         figure = self.board[from_y][from_x]
         self.board[to_y][to_x] = figure

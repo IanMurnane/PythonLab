@@ -1,22 +1,8 @@
-# The Chess game should be created. To get know more about game Chess
-# You should create 9 classes:
-# class ChessBoard
-# class Position
-# class ChessFigure - which contains main attributes as color, title,
-# position of the ChestBoard and method move() for one position.
-# Classes derived from Chess Figure: Rook, Knight, Bishop, Queen, King and Pawn.
-# Each class should have its own method move() and beat().
-# For the King should be additional attributes for saving if castling
-# were done and what side of the board it is located.
-# Each class should be tested in the solution.
-
-# https://en.wikipedia.org/wiki/Chess_symbols_in_Unicode
-# https://chessdelights.com/wp-content/uploads/2019/09/chesspositions2.png
-# https://stackoverflow.com/questions/42175815/python-tkinter-canvas-when-rectangle-clicked
-
-from tkinter import *
-from chessBoard import ChessBoard
 from math import floor
+from tkinter import *
+
+from chessBoard import ChessBoard
+from config import Color, Title
 
 
 WIDTH = 600
@@ -80,15 +66,31 @@ def click_handler(*args):
         move_x = (to_x - from_x) * CELL_SIZE
         move_y = (to_y - from_y) * CELL_SIZE
         first_click = None
+        from_piece = chessBoard.get(from_x, from_y)
+        to_piece = chessBoard.get(to_x, to_y)
         # check valid move
         if not chessBoard.is_move_valid(from_x, from_y, to_x, to_y):
             return
         # "beat" any existing piece
-        if chessBoard.get(to_x, to_y):
-            canvas.delete(chessBoard.get(to_x, to_y).ref)
-        # move piece
-        canvas.move(chessBoard.get(from_x, from_y).ref, move_x, move_y)
-        chessBoard.move(from_x, from_y, to_x, to_y)
+        if to_piece:
+            canvas.delete(to_piece.ref)
+        # check for pawn promotion
+        if from_piece.title == Title.PAWN and (to_y == 0 or to_y == 7):
+            canvas.delete(from_piece.ref)
+            chessBoard.set(from_x, from_y, from_piece.color, Title.QUEEN)
+            chessBoard.set_ref(from_x, from_y, canvas.create_text(
+                (to_x + 1) * CELL_SIZE + OFFSET_X,
+                (to_y + 1) * CELL_SIZE + OFFSET_Y,
+                text=chessBoard.get(from_x, from_y),
+                fill=Color(from_piece.color).name,
+                font="Helvetica 48",
+                tags=("handleClick", "pieces")
+            ))
+            chessBoard.move(from_x, from_y, to_x, to_y)
+        else:
+            # move piece
+            canvas.move(from_piece.ref, move_x, move_y)
+            chessBoard.move(from_x, from_y, to_x, to_y)
         canvas.tag_raise("pieces")  # pieces need to have a higher z-index than the board
 
 
