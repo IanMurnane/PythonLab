@@ -17,6 +17,7 @@ TITLE = "ChessBoard"
 chessBoard = ChessBoard()
 first_click = None
 last_color = None
+winner = None
 
 # init canvas
 win = Tk()
@@ -49,7 +50,10 @@ def get_click_cell(i):
 
 
 def click_handler(*args):
-    global first_click, last_color
+    global first_click, last_color, winner
+
+    if winner:
+        return
 
     cell_x = get_click_cell(args[0].x) - 1
     cell_y = get_click_cell(args[0].y) - 1
@@ -77,6 +81,10 @@ def click_handler(*args):
             return
         # "beat" any existing piece
         if to_piece:
+            # finish game?
+            if to_piece.title == Title.KING:
+                winner = from_piece.get_color()
+                canvas.create_text(300, 30, text=winner+" WINS", font="Helvetica 32")
             canvas.delete(to_piece.ref)
         # check for pawn promotion
         if from_piece.title == Title.PAWN and (to_y == 0 or to_y == 7):
