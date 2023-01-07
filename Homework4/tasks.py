@@ -1,8 +1,9 @@
+import matplotlib.pyplot as plt
 import numpy as np
+import scipy
 from datetime import datetime, timedelta
 from random import randint
 from sklearn.preprocessing import normalize
-import scipy
 
 
 def generate_matrix(rows, cols):
@@ -11,10 +12,10 @@ def generate_matrix(rows, cols):
 
 
 # 1. Create a vector with values ranging from 10 to 49. Reverse a vector (first element becomes last)
-vector = np.arange(10, 50)
-reversedVector = np.flip(vector)
-print(vector)
-print(reversedVector)
+# vector = np.arange(10, 50)
+# reversedVector = np.flip(vector)
+# print(vector)
+# print(reversedVector)
 
 # 2. Create a 5x5 array with random values and find the minimum and maximum values
 # matrix = generate_matrix(5, 5)
@@ -50,6 +51,12 @@ print(reversedVector)
 # print(matrix.astype(int))
 # print(np.trunc(matrix))
 
+# plot pie chart
+# fig1, ax1 = plt.subplots()
+# ax1.pie(matrix.astype(int), labels=range(5), autopct='%1i%%')
+# ax1.axis('equal')
+# plt.show()
+
 # 7. Create a structured array representing a position (x,y) and a color (r,g,b)
 # structured_array = np.array([
 #     ((12, 13), (0, 0, 255)),
@@ -58,14 +65,18 @@ print(reversedVector)
 # print(structured_array)
 
 # 1. Consider a generator function that generates 10 integers and use it to build an array
-# def int_generator():
-#     for i in range(10):
-#         yield randint(0, 100)
-#
-#
-# output = np.fromiter(int_generator(), dtype=int, count=-1)
-# print(output)
+def int_generator():
+    for i in range(10):
+        yield randint(0, 100)
 
+
+output = np.fromiter(int_generator(), dtype=int, count=-1)
+print(output)
+
+fig, ax = plt.subplots()
+ax.bar(range(10), output)
+ax.set_title('10 Integers from a Generator Function')
+plt.show()
 
 # 2. Consider two random array A and B, check if they are equal
 # rand_a = np.random.rand(6)
