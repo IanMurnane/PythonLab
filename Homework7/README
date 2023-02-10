@@ -1,0 +1,23 @@
+Arbeitsanweisung
+The aim of this work is to learn how to create a simple Django project and use it for data output.
+To create your first application please follow Django documentation
+To start Django please follow instructions for installations Install django
+Your first tutorial in Django: Start your project
+Database setup: tutorial part 2
+Working with views: tutorial part 3
+Form processing: tutorial part 4
+Update your poll with the questions about the course.
+To the templates add the logo of the FH Dortmuns and in the footer disclamer.
+Create your project at the github and apply the link your project. Add your indentification and update the readme file with the project information.
+
+
+To run local dev
+================
+python manage.py runserver
+
+Other commands
+==============
+python manage.py shell
+python manage.py createsuperuser
+python manage.py migrate
+
